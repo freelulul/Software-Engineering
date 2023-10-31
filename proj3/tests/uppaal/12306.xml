@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+broadcast chan train_arrival1;
+broadcast chan train_arrival2;
+broadcast chan train_arrival3;
+
+int train_stay_time;
+int arrival_station;
+int choose_depart;
+int pay_time_limit;
+int buy_ticket;
+int exit_sign;
+int board;
+int not_board;</declaration>
+	<template>
+		<name x="5" y="5">App</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-2473" y="-1768">
+			<name x="-2524" y="-1802">Initial_State</name>
+		</location>
+		<location id="id1" x="-1929" y="-1734">
+			<name x="-1939" y="-1768">Station2_avail</name>
+		</location>
+		<location id="id2" x="-1938" y="-1572">
+			<name x="-1948" y="-1606">Station3_avail</name>
+		</location>
+		<location id="id3" x="-2167" y="-1742">
+		</location>
+		<location id="id4" x="-2218" y="-1904">
+		</location>
+		<location id="id5" x="-1938" y="-1895">
+			<name x="-1948" y="-1929">Station1_avail</name>
+		</location>
+		<location id="id6" x="-2167" y="-1581">
+		</location>
+		<location id="id7" x="-2473" y="-1317">
+			<name x="-2550" y="-1351">Exit_State</name>
+			<committed/>
+		</location>
+		<location id="id8" x="-1691" y="-1827">
+			<name x="-1683" y="-1861">Choose_Finish</name>
+			<committed/>
+		</location>
+		<location id="id9" x="-1445" y="-1827">
+			<name x="-1454" y="-1861">Pay</name>
+		</location>
+		<location id="id10" x="-1232" y="-1827">
+			<name x="-1300" y="-1861">Buy_Ticket_Success</name>
+		</location>
+		<location id="id11" x="-977" y="-1827">
+			<name x="-987" y="-1861">Board_Train1_avail</name>
+		</location>
+		<location id="id12" x="-1096" y="-1674">
+			<name x="-1106" y="-1708">Board_Train2_avail</name>
+		</location>
+		<location id="id13" x="-1275" y="-1555">
+			<name x="-1285" y="-1589">Board_Train3_avail</name>
+		</location>
+		<location id="id14" x="-799" y="-1708">
+			<name x="-809" y="-1742">Board_train1</name>
+		</location>
+		<location id="id15" x="-935" y="-1521">
+			<name x="-945" y="-1555">Board_train2</name>
+		</location>
+		<location id="id16" x="-1207" y="-1394">
+			<name x="-1217" y="-1428">Board_train3</name>
+		</location>
+		<location id="id17" x="-1054" y="-1326">
+			<name x="-1064" y="-1360">Arrive_Destination</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-2414" y="-2023">pay_time_limit &gt; 15</label>
+			<nail x="-2074" y="-2074"/>
+			<nail x="-2839" y="-1793"/>
+			<nail x="-2788" y="-1385"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id7"/>
+			<label kind="assignment" x="-1700" y="-1555">exit_sign = 1,
+not_board = 1</label>
+			<nail x="-1674" y="-1479"/>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id7"/>
+			<label kind="assignment" x="-1980" y="-1309">exit_sign = 1</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id17"/>
+			<nail x="-833" y="-1368"/>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id17"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id17"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id16"/>
+			<label kind="assignment" x="-1257" y="-1474">board = 1</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id15"/>
+			<label kind="assignment" x="-1078" y="-1597">board = 1</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id14"/>
+			<label kind="assignment" x="-959" y="-1767">board = 1</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-1377" y="-1674">choose_depart == 3</label>
+			<label kind="synchronisation" x="-1253" y="-1708">train_arrival3?</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-1214" y="-1784">choose_depart == 2</label>
+			<label kind="synchronisation" x="-1207" y="-1742">train_arrival2?</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-1156" y="-1853">choose_depart == 1</label>
+			<label kind="synchronisation" x="-1130" y="-1827">train_arrival1?</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-1402" y="-1819">pay_time_limit &lt;= 15</label>
+			<label kind="assignment" x="-1394" y="-1853">buy_ticket = 1</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="assignment" x="-1632" y="-1827">pay_time_limit = 0</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id8"/>
+			<label kind="assignment" x="-1827" y="-1674">choose_depart = 3</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id8"/>
+			<label kind="assignment" x="-1903" y="-1810">choose_depart = 2</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id8"/>
+			<label kind="assignment" x="-1920" y="-1861">choose_depart = 1</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-2609" y="-1530">arrival_station &gt;= 3</label>
+			<label kind="assignment" x="-2456" y="-1538">exit_sign = 1</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id2"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id2"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id1"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-2431" y="-1666">arrival_station &lt; 3</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-2380" y="-1785">arrival_station &lt; 2</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-2455" y="-1870">arrival_station &lt; 1</label>
+		</transition>
+	</template>
+	<template>
+		<name>Train</name>
+		<location id="id18" x="-1105" y="-476">
+			<name x="-1139" y="-519">Initial_State</name>
+		</location>
+		<location id="id19" x="-841" y="-289">
+			<name x="-851" y="-323">Station_1</name>
+			<label kind="invariant" x="-909" y="-272">train_stay_time &lt;= 3</label>
+			<label kind="testcodeExit">train_stay_time &lt;= 3</label>
+		</location>
+		<location id="id20" x="-535" y="-467">
+			<name x="-545" y="-501">Station_2</name>
+			<label kind="invariant" x="-545" y="-450">train_stay_time &lt;= 3</label>
+		</location>
+		<location id="id21" x="-229" y="-280">
+			<name x="-239" y="-314">Station_3</name>
+			<label kind="invariant" x="-239" y="-263">train_stay_time &lt;= 3</label>
+			<committed/>
+		</location>
+		<init ref="id18"/>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id21"/>
+			<label kind="synchronisation" x="-391" y="-416">train_arrival3!</label>
+			<label kind="assignment" x="-517" y="-373">train_stay_time = 0,
+arrival_station = 3</label>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id20"/>
+			<label kind="synchronisation" x="-731" y="-348">train_arrival2!</label>
+			<label kind="assignment" x="-748" y="-450">train_stay_time = 0,
+arrival_station = 2</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-994" y="-416">train_arrival1!</label>
+			<label kind="assignment" x="-1088" y="-382">train_stay_time = 0,
+arrival_station = 1</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = App();
+Tr = Train();
+// List one or more processes to be composed into a system.
+system Process, Tr;
+    </system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt; buy_ticket == 1</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Process.Arrive_Destination &amp;&amp; Tr.Station_1</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Process.Arrive_Destination &amp;&amp; Tr.Station_2</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Process.Arrive_Destination &amp;&amp; Tr.Station_3</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Process.Pay</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] !(train_stay_time &gt; 3)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Tr.Station_3</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Tr.Station_2</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Tr.Station_1</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; not_board == 1</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; board ==1</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; !(arrival_station &gt;= 2 &amp;&amp; choose_depart == 2)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; !(arrival_station &gt;= 2 &amp;&amp; choose_depart == 1)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; arrival_station == 2 &amp;&amp; choose_depart == 3</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; arrival_station == 1 &amp;&amp; choose_depart == 3</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; arrival_station == 1 &amp;&amp; choose_depart == 2</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; arrival_station == 0 &amp;&amp; choose_depart == 3</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; arrival_station == 0 &amp;&amp; choose_depart == 2</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; arrival_station == 0 &amp;&amp; choose_depart == 1</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; exit_sign == 1</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

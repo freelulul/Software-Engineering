@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+broadcast chan Chosen;
+broadcast chan Access,no_Access,return_Access;
+
+int chessboard[5][4] = {{5,2,2,0},{5,0,8,4},{7,9,10,4},{1,1,3,6},{1,1,3,6}};
+int step = 0;</declaration>
+	<template>
+		<name>Chess2_2Template</name>
+		<parameter>int row,int col,int piece</parameter>
+		<location id="id0" x="263" y="-8">
+			<name x="253" y="-42">get_access</name>
+		</location>
+		<location id="id1" x="170" y="552">
+			<name x="143" y="561">down1</name>
+			<committed/>
+		</location>
+		<location id="id2" x="1292" y="238">
+			<name x="1282" y="204">up1</name>
+			<committed/>
+		</location>
+		<location id="id3" x="1224" y="-161">
+			<name x="1215" y="-204">right1</name>
+			<committed/>
+		</location>
+		<location id="id4" x="85" y="-459">
+			<name x="75" y="-493">left</name>
+			<committed/>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="68" y="170">chessboard[row][col] = 0,
+chessboard[row][col+1] = 0,
+chessboard[row+2][col]=piece,
+chessboard[row+2][col+1] = piece,
+step = step + 1,
+row = row + 1</label>
+			<nail x="204" y="119"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="323" y="297">row&lt;3&amp;&amp;
+chessboard[row+2][col] == 0 &amp;&amp; 
+chessboard[row+2][col+1] == 0</label>
+			<nail x="322" y="161"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="935" y="195">chessboard[row+1][col] = 0,
+chessboard[row+1][col+1] = 0,
+chessboard[row-1][col]=piece,
+chessboard[row-1][col+1] = piece,
+step = step + 1,
+row = row - 1</label>
+			<nail x="722" y="144"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="969" y="85">row&gt;0 &amp;&amp;
+chessboard[row-1][col] == 0 &amp;&amp; 
+chessboard[row-1][col+1] == 0</label>
+			<nail x="433" y="17"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="688" y="-144">chessboard[row][col] = 0,
+chessboard[row+1][col] = 0,
+chessboard[row][col+2]=piece,
+chessboard[row+1][col+2] = piece,
+step = step + 1,
+col = col +1</label>
+			<nail x="773" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id3"/>
+			<label kind="guard" x="518" y="-212">col &lt; 2 &amp;&amp;
+chessboard[row][col+2] == 0 &amp;&amp;
+chessboard[row+1][col+2] == 0</label>
+			<nail x="637" y="-153"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="144" y="-408">chessboard[row][col + 1] = 0,
+chessboard[row+1][col+1] = 0,
+chessboard[row][col-1]=piece,
+chessboard[row+1][col-1] = piece,
+step = step + 1,
+col = col - 1</label>
+			<nail x="212" y="-212"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-76" y="-255">col &gt; 0&amp;&amp;
+chessboard[row][col-1] == 0 &amp;&amp;
+chessboard[row+1][col-1] == 0</label>
+			<nail x="170" y="-212"/>
+		</transition>
+	</template>
+	<template>
+		<name>Chess2_1Template</name>
+		<parameter>int row,int col,int piece</parameter>
+		<location id="id5" x="544" y="569">
+			<name x="517" y="578">down1</name>
+			<committed/>
+		</location>
+		<location id="id6" x="263" y="-8">
+			<name x="253" y="-42">get_access</name>
+		</location>
+		<location id="id7" x="1224" y="-161">
+			<name x="1215" y="-204">right1</name>
+			<committed/>
+		</location>
+		<location id="id8" x="-51" y="-374">
+			<name x="-61" y="-408">left1</name>
+			<committed/>
+		</location>
+		<location id="id9" x="1071" y="170">
+			<name x="1061" y="136">up</name>
+			<committed/>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id6"/>
+			<label kind="assignment" x="816" y="170">chessboard[row][col] = 0,
+chessboard[row][col+1] = 0,
+chessboard[row-1][col]=piece,
+chessboard[row-1][col+1] = piece,
+step = step + 1,
+row = row - 1</label>
+			<nail x="688" y="110"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id9"/>
+			<label kind="guard" x="926" y="85">row&gt; 0 &amp;&amp;
+chessboard[row-1][col] == 0 &amp;&amp; 
+chessboard[row-1][col+1] == 0</label>
+			<nail x="765" y="42"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id6"/>
+			<label kind="assignment" x="119" y="-297">chessboard[row][col + 1] = 0,
+chessboard[row][col-1]=piece,
+step = step + 1,
+col = col - 1</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-161" y="-204">col &gt; 0 &amp;&amp;
+chessboard[row][col-1] == 0</label>
+			<nail x="42" y="-195"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="assignment" x="195" y="255">chessboard[row][col] = 0,
+chessboard[row][col+1] = 0,
+chessboard[row+1][col]=piece,
+chessboard[row+1][col+1] = piece,
+step = step + 1,
+row = row + 1</label>
+			<nail x="357" y="255"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="guard" x="586" y="433">row&lt;4 &amp;&amp;
+chessboard[row+1][col] == 0 &amp;&amp; 
+chessboard[row+1][col+1] == 0</label>
+			<nail x="425" y="246"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="assignment" x="841" y="-59">chessboard[row][col] = 0,
+chessboard[row][col+2]=piece,
+step = step + 1,
+col = col + 1</label>
+			<nail x="773" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="guard" x="569" y="-204">col &lt; 2 &amp;&amp;
+chessboard[row][col+2] == 0</label>
+			<nail x="637" y="-153"/>
+		</transition>
+	</template>
+	<template>
+		<name>Chess1_2Template</name>
+		<parameter>int row,int col,int piece</parameter>
+		<location id="id10" x="263" y="-8">
+			<name x="253" y="-42">get_access</name>
+		</location>
+		<location id="id11" x="1037" y="229">
+			<name x="1027" y="195">up1</name>
+			<committed/>
+		</location>
+		<location id="id12" x="1224" y="-161">
+			<name x="1215" y="-204">right</name>
+			<committed/>
+		</location>
+		<location id="id13" x="187" y="-391">
+			<name x="177" y="-425">left</name>
+			<committed/>
+		</location>
+		<location id="id14" x="263" y="357">
+			<name x="253" y="323">down1</name>
+			<committed/>
+		</location>
+		<init ref="id10"/>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id10"/>
+			<label kind="assignment" x="68" y="238">chessboard[row][col] = 0,
+chessboard[row+2][col]=piece,
+step = step + 1,
+row = row + 1</label>
+			<nail x="238" y="144"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id14"/>
+			<label kind="guard" x="323" y="187">row&lt;3 &amp;&amp;
+chessboard[row+2][col] == 0</label>
+			<nail x="314" y="144"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="assignment" x="688" y="178">chessboard[row+1][col] = 0,
+chessboard[row-1][col]=piece,
+step = step + 1,
+row = row - 1</label>
+			<nail x="527" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="guard" x="782" y="76">row&gt;0 &amp;&amp;
+chessboard[row-1][col] == 0</label>
+			<nail x="569" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id10"/>
+			<label kind="assignment" x="765" y="-59">chessboard[row][col] = 0,
+chessboard[row+1][col] = 0,
+chessboard[row][col+1]=piece,
+chessboard[row+1][col+1] = piece,
+step = step + 1,
+col = col +1</label>
+			<nail x="773" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id12"/>
+			<label kind="guard" x="739" y="-229">col &lt; 3 &amp;&amp;
+chessboard[row][col+1] == 0 &amp;&amp;
+chessboard[row+1][col+1] == 0</label>
+			<nail x="637" y="-153"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id10"/>
+			<label kind="assignment" x="263" y="-306">chessboard[row][col] = 0,
+chessboard[row+1][col] = 0,
+chessboard[row][col-1]=piece,
+chessboard[row+1][col-1] = piece,
+step = step + 1,
+col = col - 1</label>
+			<nail x="272" y="-204"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-25" y="-238">col &gt; 0 &amp;&amp;
+chessboard[row][col-1] == 0 &amp;&amp;
+chessboard[row+1][col-1] == 0</label>
+			<nail x="212" y="-187"/>
+		</transition>
+	</template>
+	<template>
+		<name>Chess1_1Template</name>
+		<parameter>int row,int col,int piece</parameter>
+		<location id="id15" x="331" y="323">
+			<name x="321" y="289">down1</name>
+			<committed/>
+		</location>
+		<location id="id16" x="263" y="-8">
+			<name x="253" y="-42">get_access</name>
+		</location>
+		<location id="id17" x="1037" y="229">
+			<name x="1027" y="195">up1</name>
+			<committed/>
+		</location>
+		<location id="id18" x="1224" y="-161">
+			<name x="1215" y="-204">right</name>
+			<committed/>
+		</location>
+		<location id="id19" x="-34" y="-442">
+			<name x="-44" y="-476">left1</name>
+			<committed/>
+		</location>
+		<init ref="id16"/>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id16"/>
+			<label kind="assignment" x="161" y="280">chessboard[row][col] = 0,
+chessboard[row+1][col]=piece,
+step = step + 1,
+row = row + 1</label>
+			<nail x="238" y="144"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id15"/>
+			<label kind="guard" x="374" y="170">row&lt;4 &amp;&amp;
+chessboard[row+1][col] == 0</label>
+			<nail x="314" y="144"/>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id16"/>
+			<label kind="assignment" x="688" y="178">chessboard[row][col] = 0,
+chessboard[row-1][col]=piece,
+step = step + 1,
+row = row - 1</label>
+			<nail x="527" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id17"/>
+			<label kind="guard" x="731" y="42">row&gt;0&amp;&amp;
+chessboard[row-1][col] == 0</label>
+			<nail x="569" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id16"/>
+			<label kind="assignment" x="1156" y="-136">chessboard[row][col] = 0,
+chessboard[row][col+1]=piece,
+step = step + 1,
+col = col + 1</label>
+			<nail x="773" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id18"/>
+			<label kind="guard" x="586" y="-221">col &lt; 3 &amp;&amp; 
+chessboard[row][col+1] == 0</label>
+			<nail x="637" y="-153"/>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id16"/>
+			<label kind="assignment" x="136" y="-425">chessboard[row][col] = 0,
+chessboard[row][col-1]=piece,
+step = step + 1,
+col = col - 1</label>
+			<nail x="272" y="-204"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id19"/>
+			<label kind="guard" x="-187" y="-280">col &gt; 0 &amp;&amp;
+chessboard[row][col-1] == 0</label>
+			<nail x="212" y="-187"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Chess1 = Chess2_2Template(3,0,1);
+Chess2 = Chess2_1Template(0,1,2);
+Chess3 = Chess1_2Template(3,2,3);
+Chess4 = Chess1_2Template(1,3,4);
+Chess5 = Chess1_2Template(0,0,5);
+Chess6 = Chess1_2Template(3,3,6);
+Chess7 = Chess1_1Template(2,0,7);
+Chess8 = Chess1_1Template(1,2,8);
+Chess9 = Chess1_1Template(2,1,9);
+Chess10 = Chess1_1Template(2,2,10);
+
+
+// List one or more processes to be composed into a system.
+system Chess1,Chess2,Chess3,Chess4,Chess5,Chess6,Chess7,Chess8,Chess9,Chess10;
+    </system>
+	<queries>
+		<query>
+			<formula>A[]no deadlock</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[](Chess1.row &gt;= 0 &amp;&amp; Chess1.row &lt; 4 &amp;&amp; Chess1.col &gt;=0 &amp;&amp;Chess1.col &lt; 3)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[](Chess3.row &gt;= 0 &amp;&amp; Chess3.row &lt; 4 &amp;&amp; Chess3.col &gt;=0 &amp;&amp;Chess3.col &lt;= 3)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[](Chess2.row &gt;= 0 &amp;&amp; Chess2.row &lt;= 4 &amp;&amp; Chess2.col &gt;=0 &amp;&amp;Chess2.col &lt; 3)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[](Chess7.row &gt;= 0 &amp;&amp; Chess7.row &lt;= 4 &amp;&amp; Chess7.col &gt;=0 &amp;&amp;Chess7.col &lt;= 3)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(Chess1.row == 3 &amp;&amp; Chess1.col == 1 &amp;&amp; step &lt; 200)</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
